@@ -3,6 +3,11 @@ from tkinter import messagebox
 import requests
 from PIL import ImageGrab
 import io
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 class ScreenshotUploader:
     def __init__(self, root):
@@ -28,9 +33,8 @@ class ScreenshotUploader:
         screenshot_bytes = io.BytesIO()
         screenshot.save(screenshot_bytes, format='PNG')
 
-        api_endpoint = "https://trogon.info/interview/python/"
-        
-        phone_number = "7878787878"
+        api_endpoint = os.getenv("API_ENDPOINT")
+        phone_number = os.getenv("PHONE_NUMBER")
 
         data = {
             'remarks': 'Active Application Name',
