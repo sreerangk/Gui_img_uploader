@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import requests
-from PIL import ImageGrab
+from PIL import ImageGrab, ImageTk
 import io
 import os
 from dotenv import load_dotenv
@@ -25,8 +25,23 @@ class ScreenshotUploader:
         self.button_upload.pack(pady=10)
 
     def capture_screenshot(self):
+        # Capture screenshot using Pillow (cross-platform)
         screenshot = ImageGrab.grab()
-        screenshot.show()
+
+        # Display the screenshot in a new window
+        screenshot_window = tk.Toplevel(self.root)
+        screenshot_window.title("Captured Screenshot")
+
+        # Convert the screenshot to Tkinter PhotoImage format
+        screenshot_tk = ImageTk.PhotoImage(screenshot)
+
+        # Create a label to display the screenshot
+        label_screenshot = tk.Label(screenshot_window, image=screenshot_tk)
+        label_screenshot.image = screenshot_tk  # Keep a reference to prevent garbage collection
+        label_screenshot.pack()
+
+        # Close the screenshot window on click
+        label_screenshot.bind("<Button-1>", lambda event: screenshot_window.destroy())
 
     def upload_screenshot(self):
         screenshot = ImageGrab.grab()
